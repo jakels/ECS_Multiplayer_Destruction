@@ -1,0 +1,117 @@
+# ==========================================
+# Unity Project Subfolder: MultiplayerDestruction
+# ==========================================
+
+# Unity generated directories
+/MultiplayerDestruction/.utmp/
+/MultiplayerDestruction/[Ll]ibrary/
+/MultiplayerDestruction/[Tt]emp/
+/MultiplayerDestruction/[Oo]bj/
+/MultiplayerDestruction/[Bb]uild/
+/MultiplayerDestruction/[Bb]uilds/
+/MultiplayerDestruction/[Ll]ogs/
+/MultiplayerDestruction/[Uu]ser[Ss]ettings/
+/MultiplayerDestruction/[Mm]emoryCaptures/
+/MultiplayerDestruction/[Rr]ecordings/
+
+# General logs
+*.log
+
+# Asset Store Tools & JetBrains Rider plugin inside project
+# /MultiplayerDestruction/[Aa]ssets/AssetStoreTools*
+/MultiplayerDestruction/[Aa]ssets/Plugins/Editor/JetBrains*
+
+# Modern Code Editors & IDEs (matches everywhere in the repo)
+.vs/
+.vscode/
+.idea/
+*.DotSettings.user
+.gradle/
+ExportedObj/
+.consulo/
+
+# Project & solution files
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity3D generated meta files
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Crash reports
+sysinfo.txt
+crashlytics-build.properties
+
+# Builds
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
+
+# Addressables & StreamingAssets
+/MultiplayerDestruction/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+/MultiplayerDestruction/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/MultiplayerDestruction/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Package Manager caches & lock
+/MultiplayerDestruction/Packages/manifest.json.temp
+/MultiplayerDestruction/Packages/packages-lock.json
+
+# Profiler captures & memory dumps
+*.raw
+*.profile
+*.pdata
+
+# NavMesh generation artifacts
+/MultiplayerDestruction/[Aa]ssets/[Nn]av[Mm]esh*.asset
+/MultiplayerDestruction/[Aa]ssets/[Nn]av[Mm]esh*.asset.meta
+
+# Unity Version Control / PlasticSCM
+.plastic/
+
+# ==========================================
+# OS-Specific Metadata
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# ==========================================
+# PlasticSCM / Unity Version Control Caches
+# ==========================================
+.plastic/
+
+# ==========================================
+# Packaging & Tooling Artifacts
+# ==========================================
+# Package Manager caches & staging
+/Packages/manifest.json.temp
+/Packages/packages-lock.json
+
+# Profiler captures & memory dumps
+*.raw
+*.profile
+*.pdata
+
+# NavMesh generation artifacts
+/[Aa]ssets/[Nn]av[Mm]esh*.asset
+/[Aa]ssets/[Nn]av[Mm]esh*.asset.meta
