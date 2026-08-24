@@ -115,3 +115,6 @@ Thumbs.db
 # NavMesh generation artifacts
 /[Aa]ssets/[Nn]av[Mm]esh*.asset
 /[Aa]ssets/[Nn]av[Mm]esh*.asset.meta
+
+# Word temp files
+[~$]*.docx
