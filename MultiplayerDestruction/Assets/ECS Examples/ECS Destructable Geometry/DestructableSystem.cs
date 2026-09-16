@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
@@ -11,11 +12,12 @@ namespace ECSRBExample.ECS_Destructable_Geometry
 {
     public partial struct DestructableSystem : ISystem
     {
-        public static bool DebugChunkColouring = false;
-        public static float MaximumChunkSimTime = 5f;
-        public static float MaximumChunkScale = 1.5f;
-        public static float MaximumChunkStickDisplacement = 0.9f;
+        public static readonly bool DebugChunkColouring = true;
+        public static readonly float MaximumChunkSimTime = 5f;
+        public static readonly float MaximumChunkScale = 1.5f;
+        public static readonly float MaximumChunkStickDisplacement = 0.9f;
         
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             FractureStressedObjects(ref state);
@@ -43,6 +45,7 @@ namespace ECSRBExample.ECS_Destructable_Geometry
                     ecb.DestroyEntity(destructableEntity);
                 }
             }
+            
             foreach (var (chunkComponent, chunkEntity) in SystemAPI.Query<RefRW<ChunkComponent>>().WithEntityAccess())
             {
                 chunkComponent.ValueRW.simulateTime -= (float)SystemAPI.Time.DeltaTime;
@@ -138,7 +141,7 @@ namespace ECSRBExample.ECS_Destructable_Geometry
                 }
                 if (DebugChunkColouring)
                 {
-                    em.SetComponentData(chunk, new URPMaterialPropertyBaseColor { Value = new float4(calculatedSimTime, Mathf.Min(destructableComponent.ValueRO.explosionForce, 1f), 0, 1) });
+                    em.SetComponentData(chunk, new URPMaterialPropertyBaseColor { Value = new float4(calculatedSimTime, calculatedSimTime, calculatedSimTime, 1f) });
                 }
                 ecb.SetComponent(chunk, new ChunkComponent()
                 {

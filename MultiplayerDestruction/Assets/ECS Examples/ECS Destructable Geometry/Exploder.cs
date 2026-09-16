@@ -61,8 +61,6 @@ public class Exploder : MonoBehaviour
     [Header("Explosion settings")]
     public float explosionForce = 50f;
     public float explosionRadius = 15f;
-    [Tooltip("0 = no lift, 1 = full upward bias, like Rigidbody.AddExplosionForce's upwardsModifier")]
-    public float upwardsModifier = 0f;
 
     EntityManager _em;
     EntityQuery _physicsBodyQuery;
@@ -76,43 +74,6 @@ public class Exploder : MonoBehaviour
             ComponentType.ReadOnly<PhysicsMass>(),
             ComponentType.ReadOnly<PhysicsCollider>(),
             ComponentType.ReadOnly<LocalTransform>());
-    }
-
-    void ExplosionForce()
-    {
-        
-        int count = _physicsBodyQuery.CalculateEntityCount();
-        if (count == 0) return;
-
-        var velocities = _physicsBodyQuery.ToComponentDataArray<PhysicsVelocity>(Allocator.Temp);
-        var masses = _physicsBodyQuery.ToComponentDataArray<PhysicsMass>(Allocator.Temp);
-        var colliders = _physicsBodyQuery.ToComponentDataArray<PhysicsCollider>(Allocator.Temp);
-        var transforms = _physicsBodyQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);
-
-        float3 explosionPos = transform.position;
-        float dt = Time.fixedDeltaTime;
-
-        for (int i = 0; i < count; i++)
-        {
-            if (masses[i].InverseMass == 0f)
-                continue; // kinematic/immovable body, nothing to apply
-
-            var velocity = velocities[i];
-            velocity.ApplyExplosionForce(
-                masses[i], colliders[i],
-                transforms[i].Position, transforms[i].Rotation,
-                explosionForce, explosionPos, explosionRadius,
-                dt, math.up(), upwardsModifier);
-
-            velocities[i] = velocity;
-        }
-
-        _physicsBodyQuery.CopyFromComponentDataArray(velocities);
-
-        velocities.Dispose();
-        masses.Dispose();
-        colliders.Dispose();
-        transforms.Dispose();
     }
 
     // Optional: visualize the blast radius in the editor
