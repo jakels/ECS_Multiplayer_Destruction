@@ -16,6 +16,11 @@ namespace ECSRBExample.ECS_Destructable_Geometry
         public static readonly float MaximumChunkSimTime = 5f;
         public static readonly float MaximumChunkScale = 1.5f;
         public static readonly float MaximumChunkStickDisplacement = 0.9f;
+        // Falloff factor dictates how quickly the granted simulation time per chunk falls off as distance from the explosion increases,
+        // a larger value will mean "weaker" explosions due to the settling occuring slower on more objects.
+        // Effectively dictates where on the sim time fall off curve the result equals 1 second of sim time where that point is at a distance of,
+        // 1 / SimTimeFalloffFactor. A val of 1 means its at a distance of 1 and a value of 2 means its at a distance of 0.5
+        public static readonly float SimTimeFalloffFactor = 5f;
         
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
@@ -133,8 +138,7 @@ namespace ECSRBExample.ECS_Destructable_Geometry
 
                 // Assign Static Position & sim time
                 float dist = (Vector3.Distance(destructableComponent.ValueRO.stressPosition, em.GetComponentData<LocalTransform>(chunk).Position) * (1f));
-                float falloff = 5f;
-                float calculatedSimTime = Mathf.Max(Mathf.Min((1f / (dist * falloff)) /*- (1f / destructableComponent.ValueRO.explosionForce)*/, 3f), 0f);
+                float calculatedSimTime = Mathf.Max(Mathf.Min((1f / (dist * SimTimeFalloffFactor)) /*- (1f / destructableComponent.ValueRO.explosionForce)*/, MaximumChunkSimTime), 0f);
                 if (!insideRadius)
                 {
                     calculatedSimTime = 0f;
