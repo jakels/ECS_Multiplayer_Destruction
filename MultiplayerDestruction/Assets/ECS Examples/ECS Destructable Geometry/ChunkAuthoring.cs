@@ -17,6 +17,10 @@ namespace ECSRBExample.ECS_Destructable_Geometry
                     simulateTime = 0f,
                     staticPosition = Vector3.zero
                 });
+                AddComponent(thisEntity, new ActiveChunkTag()
+                {
+                    test = 0
+                });
                 if(DestructableSystem.DebugChunkColouring)
                 {
                     AddComponent(thisEntity, new URPMaterialPropertyBaseColor

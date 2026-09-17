@@ -14,5 +14,6 @@ namespace ECSRBExample.ECS_Destructable_Geometry
         public float3 stressPosition;
         public float explosionRadius;
         public float explosionForce;
+        public Entity fracturedInstance;
     }
 }

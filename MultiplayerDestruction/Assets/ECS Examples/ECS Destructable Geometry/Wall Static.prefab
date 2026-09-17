@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ECSRBExample.ECS_Destructable_Geometry.StaticDestructableAuthoring
   fracturedPrefab: {fileID: 6185620894755020580, guid: b36efc06b095eae4689e89db8a552a26, type: 3}
-  maxStress: 1
+  maxStress: 10
 --- !u!65 &5559778781715917178
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -46,10 +46,22 @@ public class Exploder : MonoBehaviour
                     comp.explosionForce = explosionForce;
                     world.EntityManager.SetComponentData(hitEntity, comp);
                 }
-                else
+                if (world.EntityManager.HasComponent<ChunkComponent>(hitEntity))
                 {
-                    Debug.DrawLine(transform.position, hit.Position, Color.red, 0.1f);
-                }   
+                    //Debug.DrawLine(transform.position, hit.Position, Color.green, 0.1f);
+                    if (world.EntityManager.HasComponent<ActiveChunkTag>(hitEntity) == false)
+                    {
+                        world.EntityManager.DestroyEntity(hitEntity);
+                        continue;
+                    }
+                    var comp = world.EntityManager.GetComponentData<ChunkComponent>(hitEntity);
+                    comp.simulateTime = DestructableSystem.CalculateSimTime(transform.position, hitEntity, world.EntityManager);
+                    world.EntityManager.AddComponent<ActiveChunkTag>(hitEntity);
+                    DestructableSystem.ApplyExplosionForce(world.EntityManager, hitEntity, transform.position, explosionRadius, explosionForce);
+                    comp.staticPosition = world.EntityManager.GetComponentData<LocalTransform>(hitEntity).Position;
+                    world.EntityManager.SetComponentEnabled<Simulate>(hitEntity, true);
+                    world.EntityManager.SetComponentData(hitEntity, comp);
+                }
             }
         }
 
