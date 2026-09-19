@@ -46,21 +46,22 @@ public class Exploder : MonoBehaviour
                     comp.explosionForce = explosionForce;
                     world.EntityManager.SetComponentData(hitEntity, comp);
                 }
-                if (world.EntityManager.HasComponent<ChunkComponent>(hitEntity))
+                bool isChunk = world.EntityManager.HasComponent<ChunkComponent>(hitEntity);
+                if (isChunk)
                 {
+                    var chunkComponent = world.EntityManager.GetComponentData<ChunkComponent>(hitEntity);
                     //Debug.DrawLine(transform.position, hit.Position, Color.green, 0.1f);
-                    if (world.EntityManager.HasComponent<ActiveChunkTag>(hitEntity) == false)
+                    if (DestructableSystem.KillStaticChunksOnExplode && world.EntityManager.HasComponent<ActiveChunkTag>(hitEntity) == false && (chunkComponent.distanceFromStaticAtRest > DestructableSystem.MaximumChunkStickDisplacement) || !DestructableSystem.KillStaticChunksOnExpolodeChecksDistance)
                     {
                         world.EntityManager.DestroyEntity(hitEntity);
                         continue;
                     }
-                    var comp = world.EntityManager.GetComponentData<ChunkComponent>(hitEntity);
-                    comp.simulateTime = DestructableSystem.CalculateSimTime(transform.position, hitEntity, world.EntityManager);
+                    chunkComponent.simulateTime = DestructableSystem.CalculateSimTime(transform.position, hitEntity, world.EntityManager);
                     world.EntityManager.AddComponent<ActiveChunkTag>(hitEntity);
                     DestructableSystem.ApplyExplosionForce(world.EntityManager, hitEntity, transform.position, explosionRadius, explosionForce);
-                    comp.staticPosition = world.EntityManager.GetComponentData<LocalTransform>(hitEntity).Position;
+                    chunkComponent.staticPosition = world.EntityManager.GetComponentData<LocalTransform>(hitEntity).Position;
                     world.EntityManager.SetComponentEnabled<Simulate>(hitEntity, true);
-                    world.EntityManager.SetComponentData(hitEntity, comp);
+                    world.EntityManager.SetComponentData(hitEntity, chunkComponent);
                 }
             }
         }

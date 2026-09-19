@@ -18,6 +18,11 @@ namespace ECSRBExample.ECS_Destructable_Geometry
         public static readonly float MaximumChunkSimTime = 5f;
         public static readonly float MaximumChunkScale = 1.5f;
         public static readonly float MaximumChunkStickDisplacement = 0.9f;
+        public static readonly float MaximumChunkPermittedDistanceMultiple = 5f;
+        public static readonly bool KillStaticChunksOnExplode = true;
+        public static readonly bool KillStaticChunksOnExpolodeChecksDistance = false;
+        public static readonly bool RemovePhysicsOnStaticChunks = true;
+        public static readonly bool KillAstrayStaticChunks = true;
         // Falloff factor dictates how quickly the granted simulation time per chunk falls off as distance from the explosion increases,
         // a larger value will mean "weaker" explosions due to the settling occuring slower on more objects.
         // Effectively dictates where on the sim time fall off curve the result equals 1 second of sim time where that point is at a distance of,
@@ -72,6 +77,12 @@ namespace ECSRBExample.ECS_Destructable_Geometry
                 if ((chunkComponent.ValueRW.simulateTime <= 0f && Vector3.Distance(chunkComponent.ValueRW.staticPosition, em.GetComponentData<LocalTransform>(chunkEntity).Position) < MaximumChunkStickDisplacement) || chunkComponent.ValueRW.simulateTime <= -MaximumChunkSimTime)
                 {
                     // Disable entities physics simulation
+                    chunkComponent.ValueRW.distanceFromStaticAtRest = Vector3.Distance(chunkComponent.ValueRW.staticPosition, em.GetComponentData<LocalTransform>(chunkEntity).Position);
+                    if (KillAstrayStaticChunks && chunkComponent.ValueRW.distanceFromStaticAtRest > MaximumChunkPermittedDistanceMultiple * MaximumChunkStickDisplacement)
+                    {
+                        ecb.DestroyEntity(chunkEntity);
+                        continue;
+                    }
                     em.SetComponentEnabled<Simulate>(chunkEntity, false); // stop simulating
                     ecb.RemoveComponent<ActiveChunkTag>(chunkEntity);
                     // Set the chunk scale to the distance between its current position and the static position with a floor of 1f and a max of 3f
@@ -80,11 +91,7 @@ namespace ECSRBExample.ECS_Destructable_Geometry
                     var newScale = Mathf.Clamp(distance * 10f, 1f, MaximumChunkScale);
                     chunkTransform.Scale = newScale;
                     em.SetComponentData(chunkEntity, chunkTransform);
-                    if (DebugChunkColouring)
-                    {
-                        //em.SetComponentData(chunkEntity, new URPMaterialPropertyBaseColor { Value = new float4(0f,0f,0f,1f) });
-                    }
-                    if (chunkComponent.ValueRW.simulateTime <= -MaximumChunkSimTime)
+                    if (RemovePhysicsOnStaticChunks && chunkComponent.ValueRW.simulateTime <= -MaximumChunkSimTime && chunkComponent.ValueRW.distanceFromStaticAtRest > MaximumChunkStickDisplacement)
                     {
                         
                         // Fully retire the chunk from the dynamics world instead of just

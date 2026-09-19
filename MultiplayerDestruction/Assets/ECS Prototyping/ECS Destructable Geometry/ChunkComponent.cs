@@ -7,5 +7,6 @@ namespace ECSRBExample.ECS_Destructable_Geometry
     {
         public float simulateTime;
         public float3 staticPosition;
+        public float distanceFromStaticAtRest;
     }
 }
